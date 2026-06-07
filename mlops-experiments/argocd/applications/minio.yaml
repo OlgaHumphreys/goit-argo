@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.min.io/
+    chart: minio
+    targetRevision: 5.2.0
+    helm:
+      values: |
+        mode: standalone
+        rootUser: minioadmin
+        rootPassword: minioadmin
+        buckets:
+          - name: mlflow-artifacts
+            policy: none
+            purge: false
+        persistence:
+          size: 5Gi
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 100m
+        service:
+          type: ClusterIP
+          port: 9000
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mlflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

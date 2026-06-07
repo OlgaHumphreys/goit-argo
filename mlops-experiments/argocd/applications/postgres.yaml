@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: postgresql
+    targetRevision: 13.4.4
+    helm:
+      values: |
+        auth:
+          username: mlflow
+          password: mlflow
+          database: mlflow
+        primary:
+          persistence:
+            size: 2Gi
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mlflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
