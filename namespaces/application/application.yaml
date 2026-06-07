@@ -17,6 +17,15 @@ spec:
           type: LoadBalancer
         backendStore:
           databaseMigration: true
+        extraArgs:
+          gunicorn-opts: "--workers 1 --timeout 120"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
 
   destination:
     server: https://kubernetes.default.svc
