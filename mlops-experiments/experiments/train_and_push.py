@@ -11,7 +11,7 @@ from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 # ── Configuration ──────────────────────────────────────────────────────────────
 MLFLOW_URI      = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
 PUSHGATEWAY_URL = os.getenv("PUSHGATEWAY_URL",    "localhost:9091")
-BEST_MODEL_DIR  = "best_model"
+BEST_MODEL_DIR  = "../best_model"
 
 mlflow.set_tracking_uri(MLFLOW_URI)
 mlflow.set_experiment("iris-experiment")
